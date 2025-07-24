@@ -27,23 +27,23 @@ then
     echo -e "$Y please login with $N $R superuser $N"
 fi
 
-dnf install mysql-server -y &>>$LOGFILE
+dnf install mysql-server -y &>> $LOGFILE
 VALIDATE $? "installing mysql server"
 
-systemctl enable mysqld &>>$LOGFILE
+systemctl enable mysqld &>> $LOGFILE
 VALIDATE $? "enabling mysql server"
 
-systemctl start mysqld &>>$LOGFILE
+systemctl start mysqld &>> $LOGFILE
 VALIDATE $? "starting mysql server"
 
 #below command is not idempotent
 #mysql_secure_installation --set-root-pass ExpenseApp@1
 
 #idempotent
-mysql -h db.devopswithmsvs.uno -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
+mysql -h db.devopswithmsvs.uno -uroot -p${mysql_root_password} -e 'show databases;' &>> $LOGFILE
 if [ $? -ne 0 ]
 then
-    mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$LOGFILE
+    mysql_secure_installation --set-root-pass ${mysql_root_password} &>> $LOGFILE
 else    
     echo -e "mysql_root_password is already exists $Y SKIPPING $N"
 fi
