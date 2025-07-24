@@ -14,7 +14,7 @@ read -s mysql_root_password
 
 
 VALIDATE () {
-    if [ $1 -ne 0]
+    if [ $1 -ne 0 ]
     then
         echo -e "$R error in $2 $N"
     else
@@ -41,7 +41,7 @@ VALIDATE $? "starting mysql server"
 
 #idempotent
 mysql -h db.devopswithmsvs.uno -uroot -p${mysql_root_password} -e 'show databases;' &>>$LOGFILE
-if [ $? -ne 0]
+if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ${mysql_root_password} &>>$LOGFILE
 else    
