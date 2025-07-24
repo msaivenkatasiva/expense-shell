@@ -9,6 +9,9 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
+echo "please enter db password"
+read -s msql_root_password
+
 VALIDATE () {
     if [ $1 -ne 0 ]
     then    
@@ -58,4 +61,23 @@ VALIDATE $? "extracted backend code"
 npm install
 VALIDATE $? "dependencies installing"
 
-cp 
+cp /home/ec2-user/expense-shell /etc/systemd/system/backend.service
+VALIDATE $? "copying backend file"
+
+systemctl daemon-reload &>>$LOGFILE
+VALIDATE $? "Daemon Reload"
+
+systemctl start backend &>>$LOGFILE
+VALIDATE $? "Starting backend"
+
+systemctl enable backend &>>$LOGFILE
+VALIDATE $? "Enabling backend"
+
+dnf install mysql -y &>>$LOGFILE
+VALIDATE $? "Installing MySQL Client"
+
+mysql -h db.daws78s.online -uroot -p${mysql_root_password} < /app/schema/backend.sql &>>$LOGFILE
+VALIDATE $? "Schema loading"
+
+systemctl restart backend &>>$LOGFILE
+VALIDATE $? "Restarting Backend"
