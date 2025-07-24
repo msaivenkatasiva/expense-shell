@@ -64,20 +64,20 @@ VALIDATE $? "dependencies installing"
 cp -r /home/ec2-user/expense-shell /etc/systemd/system/backend.service
 VALIDATE $? "copying backend file"
 
-systemctl daemon-reload &>>$LOGFILE
+systemctl daemon-reload 
 VALIDATE $? "Daemon Reload"
 
-systemctl start backend &>>$LOGFILE
+systemctl start backend 
 VALIDATE $? "Starting backend"
 
-systemctl enable backend &>>$LOGFILE
+systemctl enable backend 
 VALIDATE $? "Enabling backend"
 
-dnf install mysql -y &>>$LOGFILE
+dnf install mysql -y 
 VALIDATE $? "Installing MySQL Client"
 
-mysql -h db.daws78s.online -uroot -p${mysql_root_password} < /app/schema/backend.sql &>>$LOGFILE
+mysql -h db.devopswithmsvs.uno -uroot -p${mysql_root_password} < /app/schema/backend.sql 
 VALIDATE $? "Schema loading"
 
-systemctl restart backend &>>$LOGFILE
+systemctl restart backend 
 VALIDATE $? "Restarting Backend"
